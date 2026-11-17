@@ -16,4 +16,10 @@ class DescuentosTest {
     void clienteFrecuenteRecibeDescuento() {
         assertEquals(2700, descuentos.aplicarDescuento(3000, "frecuente"));
     }
+
+    @Test
+    @DisplayName("Un cobro de cero para cliente sin descuento queda en cero")
+    void clienteSinDescuentoConValorCero() {
+        assertEquals(0, descuentos.aplicarDescuento(0, "ninguno"));
+    }
 }
