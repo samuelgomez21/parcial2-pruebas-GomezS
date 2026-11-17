@@ -6,7 +6,7 @@ public class Descuentos {
     /** Calcula el descuento inicial para un cliente frecuente. */
     public int aplicarDescuento(int valor, String tipoCliente) {
         if ("frecuente".equals(tipoCliente)) {
-            return valor - 300;
+            return valor * 90 / 100;
         }
         if ("ninguno".equals(tipoCliente)) {
             return valor;
