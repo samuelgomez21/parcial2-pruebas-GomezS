@@ -1,37 +1,39 @@
 package parqueadero;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Construye el resumen de los registros diarios del parqueadero. */
 public class Reportes {
 
-    static final int tarifaCarro = 3000;
+    private static final String CARRO = "carro";
+    private static final String MOTO = "moto";
+    private static final String TOTAL_RECAUDADO = "total_recaudado";
 
+    private final CalculadoraTarifas calculadoraTarifas = new CalculadoraTarifas();
+
+    /** Cuenta los vehículos por tipo y suma las tarifas recaudadas. */
     public Map<String, Integer> resumen(List<Registro> registros) {
-        Map<String, Integer> r = new HashMap<>();
-        r.put("carro", 0);
-        r.put("moto", 0);
-        r.put("total_recaudado", 0);
-        int temporal = 0;
-        for (Registro reg : registros) {
-            if (reg.tipo().equals("carro")) {
-                r.put("carro", r.get("carro") + 1);
-                if (reg.minutos() > 15) {
-                    int v = (int) Math.ceil(reg.minutos() / 60.0) * tarifaCarro;
-                    if (v > 25000) v = 25000;
-                    r.put("total_recaudado", r.get("total_recaudado") + v);
-                }
-            } else if (reg.tipo().equals("moto")) {
-                r.put("moto", r.get("moto") + 1);
-                if (reg.minutos() > 15) {
-                    int v = (int) Math.ceil(reg.minutos() / 60.0) * 1500;
-                    if (v > 12000) v = 12000;
-                    r.put("total_recaudado", r.get("total_recaudado") + v);
-                }
-            }
+        Map<String, Integer> resumen = crearResumenVacio();
+        for (Registro registro : registros) {
+            sumarRegistro(resumen, registro);
         }
-        return r;
+        return resumen;
+    }
+
+    private Map<String, Integer> crearResumenVacio() {
+        Map<String, Integer> resumen = new HashMap<>();
+        resumen.put(CARRO, 0);
+        resumen.put(MOTO, 0);
+        resumen.put(TOTAL_RECAUDADO, 0);
+        return resumen;
+    }
+
+    private void sumarRegistro(Map<String, Integer> resumen, Registro registro) {
+        String tipoVehiculo = registro.tipo();
+        resumen.put(tipoVehiculo, resumen.get(tipoVehiculo) + 1);
+        int tarifa = calculadoraTarifas.calcularTarifa(registro.minutos(), tipoVehiculo);
+        resumen.put(TOTAL_RECAUDADO, resumen.get(TOTAL_RECAUDADO) + tarifa);
     }
 }
