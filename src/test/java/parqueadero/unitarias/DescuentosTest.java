@@ -28,4 +28,10 @@ class DescuentosTest {
     void clienteConvenioRecibeDescuento() {
         assertEquals(20000, descuentos.aplicarDescuento(25000, "convenio"));
     }
+
+    @Test
+    @DisplayName("El descuento frecuente redondea hacia abajo al peso entero")
+    void descuentoFrecuenteRedondeaHaciaAbajo() {
+        assertEquals(1799, descuentos.aplicarDescuento(1999, "frecuente"));
+    }
 }
