@@ -11,6 +11,9 @@ public class Descuentos {
         if ("ninguno".equals(tipoCliente)) {
             return valor;
         }
-        throw new IllegalArgumentException("Tipo de cliente no válido");
+        if ("convenio".equals(tipoCliente)) {
+            return valor * 80 / 100;
+        }
+        return valor;
     }
 }
