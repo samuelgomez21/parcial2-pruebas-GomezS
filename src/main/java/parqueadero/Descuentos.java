@@ -8,6 +8,9 @@ public class Descuentos {
         if ("frecuente".equals(tipoCliente)) {
             return valor - 300;
         }
+        if ("ninguno".equals(tipoCliente)) {
+            return valor;
+        }
         throw new IllegalArgumentException("Tipo de cliente no válido");
     }
 }
